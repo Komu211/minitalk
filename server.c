@@ -6,7 +6,7 @@
 /*   By: kmuhlbau <kmuhlbau@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:43:13 by kmuhlbau          #+#    #+#             */
-/*   Updated: 2024/11/05 13:50:14 by kmuhlbau         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:08:49 by kmuhlbau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ int	main(void)
 	struct sigaction	sa;
 
 	sa.sa_handler = sig_handler;
+	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
-	ft_printf("%d", getpid());
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
+	printf("%d\n", getpid());
 	while (1)
 	{
 		pause();
-		usleep(200);
 	}
 	return (0);
 }
