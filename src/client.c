@@ -6,7 +6,7 @@
 /*   By: kmuhlbau <kmuhlbau@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 13:51:53 by kmuhlbau          #+#    #+#             */
-/*   Updated: 2024/11/07 12:54:22 by kmuhlbau         ###   ########.fr       */
+/*   Updated: 2024/11/07 13:14:39 by kmuhlbau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 #include <signal.h>
 #include <unistd.h>
 
-void	send_message(char **argv)
+int	send_message(char **argv)
 {
 	int				i;
 	int				j;
 	unsigned int	pid;
+	int				r_code;
 
 	i = 0;
 	pid = ft_atoi(argv[1]);
@@ -28,16 +29,17 @@ void	send_message(char **argv)
 		while (j >= 1)
 		{
 			if ((argv[2][i] & j) == 0)
-				kill(pid, SIGUSR1);
+				r_code = kill(pid, SIGUSR1);
 			else
-			{
-				kill(pid, SIGUSR2);
-			}
+				r_code = kill(pid, SIGUSR2);
+			if (r_code == -1)
+				return (-1);
 			j /= 2;
 			pause();
 		}
 		i++;
 	}
+	return (0);
 }
 
 void	sig_handler(int signum)
@@ -49,6 +51,7 @@ void	sig_handler(int signum)
 int	main(int argc, char **argv)
 {
 	struct sigaction	sa;
+	int					r_code;
 
 	sa.sa_handler = sig_handler;
 	sa.sa_flags = 0;
@@ -56,6 +59,8 @@ int	main(int argc, char **argv)
 	sigaction(SIGUSR1, &sa, NULL);
 	if (argc != 3)
 		return (write(1, "Invalid amount of Arguments!\n", 29), 1);
-	send_message(argv);
-	return (0);
+	r_code = send_message(argv);
+	if (r_code == -1)
+		ft_printf("ERROR: check PID is correct and server is running\n");
+	return (r_code);
 }
