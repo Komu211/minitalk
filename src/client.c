@@ -6,7 +6,7 @@
 /*   By: kmuhlbau <kmuhlbau@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 13:51:53 by kmuhlbau          #+#    #+#             */
-/*   Updated: 2024/11/07 15:00:49 by kmuhlbau         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:04:38 by kmuhlbau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	main(int argc, char **argv)
 	sigaction(SIGUSR1, &sa, NULL);
 	if (argc != 3)
 		return (ft_printf("Invalid amount of Arguments!\n"));
-	// ft_printf("%s", argv[2]);
 	r_code = send_message(argv);
 	if (r_code == -1)
 		ft_printf("ERROR: check PID is correct and server is running\n");
