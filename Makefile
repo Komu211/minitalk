@@ -22,6 +22,8 @@ INCLUDES = -I$(LIBFT_DIR) -I$(LIBFT_DIR)/includes
 
 all: $(NAME_SERVER) $(NAME_CLIENT)
 
+bonus: all
+
 # Create output directory
 $(OUT_DIR):
 	@mkdir -p $(OUT_DIR)
@@ -51,4 +53,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re

@@ -6,15 +6,14 @@
 /*   By: kmuhlbau <kmuhlbau@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:43:13 by kmuhlbau          #+#    #+#             */
-/*   Updated: 2024/11/06 14:14:52 by kmuhlbau         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:56:29 by kmuhlbau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <signal.h>
 #include <unistd.h>
-#include "libft.h"
 
-// Only recieves SIGVAR1 or SIGVAR2 / 30 / 31
 void	sig_handler(int signum)
 {
 	static unsigned int	c = 0;
@@ -28,6 +27,7 @@ void	sig_handler(int signum)
 		c = 0;
 		pos = 0;
 	}
+
 }
 
 int	main(void)
