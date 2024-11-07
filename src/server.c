@@ -6,7 +6,7 @@
 /*   By: kmuhlbau <kmuhlbau@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:43:13 by kmuhlbau          #+#    #+#             */
-/*   Updated: 2024/11/07 11:56:29 by kmuhlbau         ###   ########.fr       */
+/*   Updated: 2024/11/07 12:47:11 by kmuhlbau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 #include <signal.h>
 #include <unistd.h>
 
-void	sig_handler(int signum)
+void	sig_handler(int signum, siginfo_t *info, void *context)
 {
 	static unsigned int	c = 0;
 	static int			pos = 0;
 
+	(void)(*context);
 	c = (c << 1) | (signum - SIGUSR1);
 	pos++;
 	if (pos == 8)
@@ -27,15 +28,15 @@ void	sig_handler(int signum)
 		c = 0;
 		pos = 0;
 	}
-
+	kill(info->si_pid, SIGUSR1);
 }
 
 int	main(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_handler = sig_handler;
-	sa.sa_flags = 0;
+	sa.sa_sigaction = sig_handler;
+	sa.sa_flags = SA_SIGINFO;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);

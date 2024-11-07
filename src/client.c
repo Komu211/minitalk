@@ -6,7 +6,7 @@
 /*   By: kmuhlbau <kmuhlbau@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 13:51:53 by kmuhlbau          #+#    #+#             */
-/*   Updated: 2024/11/07 11:59:32 by kmuhlbau         ###   ########.fr       */
+/*   Updated: 2024/11/07 12:54:22 by kmuhlbau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,26 @@ void	send_message(char **argv)
 				kill(pid, SIGUSR2);
 			}
 			j /= 2;
-			usleep(200);
-			// Wait for ACK Signal here
+			pause();
 		}
 		i++;
 	}
 }
 
-// int	sig_handler(int signum)
-// {
-// }
+void	sig_handler(int signum)
+{
+	(void)(signum);
+	return ;
+}
 
 int	main(int argc, char **argv)
 {
+	struct sigaction	sa;
+
+	sa.sa_handler = sig_handler;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGUSR1, &sa, NULL);
 	if (argc != 3)
 		return (write(1, "Invalid amount of Arguments!\n", 29), 1);
 	send_message(argv);
