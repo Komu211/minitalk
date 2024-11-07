@@ -6,7 +6,7 @@
 /*   By: kmuhlbau <kmuhlbau@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:43:13 by kmuhlbau          #+#    #+#             */
-/*   Updated: 2024/11/07 16:16:28 by kmuhlbau         ###   ########.fr       */
+/*   Updated: 2024/11/07 16:43:03 by kmuhlbau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <signal.h>
 #include <unistd.h>
 
-void	sig_handler(int signum, siginfo_t *info, void *context)
+static void	sig_handler(int signum, siginfo_t *info, void *context)
 {
 	static unsigned int	c = 0;
 	static int			pos = 0;
@@ -44,10 +44,13 @@ int	main(void)
 
 	sa.sa_sigaction = sig_handler;
 	sa.sa_flags = SA_SIGINFO;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
-	sigaction(SIGINT, &sa, NULL);
+	if (sigemptyset(&sa.sa_mask) != 0 || sigaction(SIGUSR1, &sa, NULL) != 0
+		|| sigaction(SIGUSR2, &sa, NULL) != 0 || sigaction(SIGINT, &sa,
+			NULL) != 0)
+	{
+		ft_printf("Error setting up signal handlers\n");
+		return (1);
+	}
 	ft_printf("Server PID: %d\n", getpid());
 	while (1)
 	{
