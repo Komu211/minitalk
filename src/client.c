@@ -6,7 +6,7 @@
 /*   By: kmuhlbau <kmuhlbau@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 13:51:53 by kmuhlbau          #+#    #+#             */
-/*   Updated: 2024/11/07 16:05:17 by kmuhlbau         ###   ########.fr       */
+/*   Updated: 2024/11/07 16:32:43 by kmuhlbau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <signal.h>
 #include <unistd.h>
 
-int	send_message(char **argv)
+static int	send_message(char **argv)
 {
 	int				i;
 	int				j;
@@ -43,13 +43,13 @@ int	send_message(char **argv)
 	return (0);
 }
 
-void	sig_handler(int signum)
+static void	sig_handler(int signum)
 {
 	(void)(signum);
 	return ;
 }
 
-int	check_only_numbers(char *pid)
+static int	check_only_numbers(char *pid)
 {
 	int	i;
 
@@ -72,14 +72,17 @@ int	main(int argc, char **argv)
 
 	sa.sa_handler = sig_handler;
 	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGUSR1, &sa, NULL);
 	if (argc != 3)
 		return (ft_printf("Invalid amount of Arguments!\n"));
 	if (!check_only_numbers(argv[1]))
 	{
-		ft_printf("Only use positive digits (> 0 and no leading 0)for the PID!\n");
+		ft_printf("Only use positive digits (> 0, no leading 0)for the PID!\n");
 		return (-1);
+	}
+	if (sigemptyset(&sa.sa_mask) != 0 || sigaction(SIGUSR1, &sa, NULL) != 0)
+	{
+		ft_printf("Error setting up signal handlers\n");
+		return (1);
 	}
 	r_code = send_message(argv);
 	if (r_code == -1)
