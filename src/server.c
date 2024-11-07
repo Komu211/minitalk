@@ -6,7 +6,7 @@
 /*   By: kmuhlbau <kmuhlbau@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:43:13 by kmuhlbau          #+#    #+#             */
-/*   Updated: 2024/11/07 12:47:11 by kmuhlbau         ###   ########.fr       */
+/*   Updated: 2024/11/07 14:57:00 by kmuhlbau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	sig_handler(int signum, siginfo_t *info, void *context)
 		c = 0;
 		pos = 0;
 	}
+	usleep(100);
 	kill(info->si_pid, SIGUSR1);
 }
 
