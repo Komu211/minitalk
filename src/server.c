@@ -6,7 +6,7 @@
 /*   By: kmuhlbau <kmuhlbau@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:43:13 by kmuhlbau          #+#    #+#             */
-/*   Updated: 2024/11/07 15:27:12 by kmuhlbau         ###   ########.fr       */
+/*   Updated: 2024/11/07 16:16:28 by kmuhlbau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ void	sig_handler(int signum, siginfo_t *info, void *context)
 	static int			pos = 0;
 
 	(void)(context);
+	if (signum == SIGINT)
+	{
+		ft_printf("Closing Server...\n");
+		exit(0);
+		return ;
+	}
 	c = (c << 1) | (signum - SIGUSR1);
 	pos++;
 	if (pos == 8)
@@ -41,7 +47,8 @@ int	main(void)
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
-	ft_printf("%d\n", getpid());
+	sigaction(SIGINT, &sa, NULL);
+	ft_printf("Server PID: %d\n", getpid());
 	while (1)
 	{
 		pause();
