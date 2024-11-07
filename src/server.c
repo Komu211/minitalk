@@ -6,7 +6,7 @@
 /*   By: kmuhlbau <kmuhlbau@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:43:13 by kmuhlbau          #+#    #+#             */
-/*   Updated: 2024/11/07 14:57:00 by kmuhlbau         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:27:12 by kmuhlbau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	sig_handler(int signum, siginfo_t *info, void *context)
 	static unsigned int	c = 0;
 	static int			pos = 0;
 
-	(void)(*context);
+	(void)(context);
 	c = (c << 1) | (signum - SIGUSR1);
 	pos++;
 	if (pos == 8)
